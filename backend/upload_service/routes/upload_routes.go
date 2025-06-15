@@ -10,4 +10,5 @@ import (
 func RegisterUploadRoutes(app *fiber.App) {
 	api := app.Group("/api/upload", middleware.JWTMiddleware())
 	api.Post("/", controllers.UploadVideo)
+
 }

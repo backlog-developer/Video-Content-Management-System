@@ -1,11 +1,9 @@
 package controllers
 
 import (
-	"fmt"
-	"time"
-
 	"video_content_management_system/backend/upload_service/config"
 	"video_content_management_system/backend/upload_service/middleware"
+	"video_content_management_system/backend/upload_service/storage"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -41,8 +39,9 @@ func UploadVideo(c *fiber.Ctx) error {
 	}
 
 	// Save file to disk
-	filePath := fmt.Sprintf("./storage/videos/%d_%s", time.Now().Unix(), file.Filename)
-	if err := c.SaveFile(file, filePath); err != nil {
+	// Save file using local storage module
+	filePath, err := storage.SaveToLocal(c, file)
+	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "Failed to save file"})
 	}
 

@@ -7,20 +7,20 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/joho/godotenv"
 
-	"video_content_management_system/backend/user_service/config"
-	"video_content_management_system/backend/user_service/routes"
+	"user_service/config"
+	"user_service/routes"
 )
 
 func main() {
 	// Load env
-	if err := godotenv.Load(); err != nil {
-		log.Fatal("Error loading .env file")
+	err := godotenv.Load("../.env")
+	if err != nil {
+		log.Fatalf("❌ Error loading .env file: %v", err)
 	}
-
 	// Initialize DB connection
 	db, err := config.ConnectDatabase()
 	if err != nil {
-		log.Fatalf("Database connection error: %v", err)
+		log.Fatalf("❌ Database connection failed: %v", err)
 	}
 	defer db.Close()
 

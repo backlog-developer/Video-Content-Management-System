@@ -8,4 +8,5 @@ type User struct {
 	Email        string
 	PasswordHash string
 	CreatedAt    time.Time
+	Role         string `json:"role"`
 }

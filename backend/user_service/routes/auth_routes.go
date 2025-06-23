@@ -2,16 +2,16 @@ package routes
 
 import (
 	"database/sql"
+	"fmt"
+	"os"
 	"time"
 
-	"video_content_management_system/backend/user_service/utils"
+	"user_service/utils"
 
 	"github.com/gofiber/fiber/v2"
-	"github.com/golang-jwt/jwt/v5"
 	"golang.org/x/crypto/bcrypt"
 )
 
-// Structs for request parsing
 type LoginRequest struct {
 	Username string `json:"username"`
 	Password string `json:"password"`
@@ -24,7 +24,7 @@ type RegisterRequest struct {
 	Role     string `json:"role"`
 }
 
-// Public Route: /register
+// /register
 func Register(db *sql.DB) fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		var body RegisterRequest
@@ -72,7 +72,7 @@ func Register(db *sql.DB) fiber.Handler {
 	}
 }
 
-// Public Route: /login
+// /login
 func Login(db *sql.DB) fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		var body LoginRequest
@@ -95,23 +95,24 @@ func Login(db *sql.DB) fiber.Handler {
 			return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"error": "Invalid credentials"})
 		}
 
-		// Generate JWT
-		claims := jwt.MapClaims{
-			"username": username,
-			"role":     role,
-			"exp":      time.Now().Add(72 * time.Hour).Unix(),
-		}
-		token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-		tokenString, err := token.SignedString(utils.JWTSecret)
+		// Log the details (for debugging)
+		fmt.Println("✅ Logging in:", username, id, role)
+		fmt.Println("🔑 JWT_SECRET from env:", os.Getenv("JWT_SECRET"))
+
+		// ✅ Correctly generate token
+		tokenString, err := utils.GenerateJWT(id, role)
 		if err != nil {
 			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "Could not generate token"})
 		}
 
-		return c.JSON(fiber.Map{"token": tokenString})
+		return c.JSON(fiber.Map{
+			"message": "Login successful",
+			"token":   tokenString,
+		})
 	}
 }
 
-// Protected Route: /me
+// /me
 func Me(db *sql.DB) fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		username := c.Locals("user").(string)
@@ -136,7 +137,7 @@ func Me(db *sql.DB) fiber.Handler {
 	}
 }
 
-// Protected Route: /profile
+// /profile
 func Profile() fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		username := c.Locals("user").(string)

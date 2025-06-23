@@ -15,7 +15,7 @@ type VideoMetadata struct {
 }
 
 func FetchVideosMetadata(jwtToken string) ([]VideoMetadata, error) {
-	url := "http://localhost:4000/api/upload/videos"
+	url := "http://localhost:4003/api/upload/videos"
 
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {

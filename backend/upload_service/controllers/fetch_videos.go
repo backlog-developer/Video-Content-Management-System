@@ -1,8 +1,8 @@
 package controllers
 
 import (
-	"video_content_management_system/backend/upload_service/config"
-	"video_content_management_system/backend/upload_service/middleware"
+	"github.com/backlog-developer/video_content_management_system/backend/upload_service/config"
+	"github.com/backlog-developer/video_content_management_system/backend/upload_service/middleware"
 
 	"github.com/gofiber/fiber/v2"
 )

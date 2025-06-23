@@ -3,5 +3,6 @@ go 1.24.3
 use (
 	./backend/course_service
 	./backend/upload_service
+	./backend/user_service
 	./backend/video_processing_service
 )

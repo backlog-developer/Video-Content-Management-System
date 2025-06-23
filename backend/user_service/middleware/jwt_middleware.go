@@ -2,7 +2,8 @@ package middleware
 
 import (
 	"strings"
-	"video_content_management_system/backend/user_service/utils"
+
+	"user_service/utils"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/golang-jwt/jwt/v5"
@@ -25,7 +26,7 @@ func JWTMiddleware(c *fiber.Ctx) error {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fiber.ErrUnauthorized
 		}
-		return utils.JWTSecret, nil
+		return utils.GenerateJWT, nil
 	})
 
 	if err != nil || !token.Valid {

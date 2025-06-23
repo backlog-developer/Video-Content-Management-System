@@ -5,8 +5,8 @@ import (
 	"log"
 	"os"
 
-	"video_content_management_system/backend/upload_service/config"
-	"video_content_management_system/backend/upload_service/routes"
+	"github.com/backlog-developer/video_content_management_system/backend/upload_service/config"
+	"github.com/backlog-developer/video_content_management_system/backend/upload_service/routes"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/joho/godotenv"

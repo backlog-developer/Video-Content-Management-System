@@ -3,7 +3,8 @@ package controllers
 import (
 	"database/sql"
 	"time"
-	"video_content_management_system/backend/user_service/utils"
+
+	"user_service/utils"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/golang-jwt/jwt/v5"
@@ -29,7 +30,7 @@ func generateJWT(username, role string) (string, error) {
 		"exp":      time.Now().Add(time.Hour * 72).Unix(),
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	return token.SignedString(utils.JWTSecret)
+	return token.SignedString(utils.GenerateJWT)
 }
 
 // Register handles user registration

@@ -3,7 +3,7 @@ package routes
 import (
 	"database/sql"
 
-	"video_content_management_system/backend/course_service/controllers"
+	"github.com/backlog-developer/video_content_management_system/backend/course_service/controllers"
 
 	"github.com/gofiber/fiber/v2"
 )

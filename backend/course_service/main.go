@@ -7,8 +7,9 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/joho/godotenv"
 
-	"video_content_management_system/backend/course_service/config"
-	"video_content_management_system/backend/course_service/routes"
+	"github.com/backlog-developer/video_content_management_system/backend/course_service/routes"
+
+	"github.com/backlog-developer/video_content_management_system/backend/course_service/config"
 )
 
 func main() {

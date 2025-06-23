@@ -4,7 +4,8 @@ import (
 	"database/sql"
 	"fmt"
 	"strconv"
-	"video_content_management_system/backend/course_service/models"
+
+	"github.com/backlog-developer/video_content_management_system/backend/course_service/models"
 
 	"github.com/gofiber/fiber/v2"
 )

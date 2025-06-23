@@ -2,7 +2,8 @@ package routes
 
 import (
 	"database/sql"
-	"video_content_management_system/backend/user_service/middleware"
+
+	"user_service/middleware"
 
 	"github.com/gofiber/fiber/v2"
 )

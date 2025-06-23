@@ -13,8 +13,8 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/joho/godotenv"
 
-	"video_content_management_system/backend/user_service/config"
-	"video_content_management_system/backend/user_service/routes"
+	"user_service/config"
+	"user_service/routes"
 )
 
 var app *fiber.App

@@ -1,15 +1,19 @@
 package controllers
 
 import (
-	"video_content_management_system/backend/upload_service/config"
-	"video_content_management_system/backend/upload_service/middleware"
-	"video_content_management_system/backend/upload_service/storage"
+	"fmt"
+	"strconv"
+
+	"github.com/backlog-developer/video_content_management_system/backend/upload_service/config"
+	"github.com/backlog-developer/video_content_management_system/backend/upload_service/middleware"
+	"github.com/backlog-developer/video_content_management_system/backend/upload_service/storage"
 
 	"github.com/gofiber/fiber/v2"
 )
 
 func UploadVideo(c *fiber.Ctx) error {
 	userClaims := c.Locals("user").(*middleware.UserClaims)
+	fmt.Printf("🔍 Uploading as user ID: %d (Role: %s)\n", userClaims.UserID, userClaims.Role)
 
 	// Only instructors or admins can upload
 	if userClaims.Role != "instructor" && userClaims.Role != "admin" {
@@ -24,10 +28,16 @@ func UploadVideo(c *fiber.Ctx) error {
 
 	title := c.FormValue("title")
 	description := c.FormValue("description")
-	courseID := c.FormValue("course_id")
+	courseIDStr := c.FormValue("course_id")
 
-	if title == "" || courseID == "" {
+	// Validate required fields
+	if title == "" || courseIDStr == "" {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Title and Course ID are required"})
+	}
+
+	courseID, err := strconv.Atoi(courseIDStr)
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Invalid course ID"})
 	}
 
 	// File validation
@@ -38,7 +48,6 @@ func UploadVideo(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Only MP4 videos allowed"})
 	}
 
-	// Save file to disk
 	// Save file using local storage module
 	filePath, err := storage.SaveToLocal(c, file)
 	if err != nil {
@@ -61,11 +70,12 @@ func UploadVideo(c *fiber.Ctx) error {
 		file.Filename,
 		filePath,
 		file.Size,
-		userClaims.ID,
+		userClaims.UserID,
 		courseID,
 	).Scan(&videoID)
 
 	if err != nil {
+		fmt.Println("❌ SQL Error inserting metadata:", err)
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "Failed to save metadata"})
 	}
 

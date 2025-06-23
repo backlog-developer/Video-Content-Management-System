@@ -6,7 +6,7 @@ import (
 )
 
 func StartTranscodingJob(inputPath string, baseFilename string) {
-	outputDir := shared.Config.OutputDir
+	outputDir := shared.Config.ProcessedVideosDir
 	err := utils.EnsureDir(outputDir)
 	if err != nil {
 		shared.Error.Println("Error creating output dir:", err)
